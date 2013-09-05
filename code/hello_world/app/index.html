@@ -1,0 +1,85 @@
+<!doctype html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title></title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width">
+        <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+        <!-- build:css({.tmp,app}) styles/main.css -->
+        <link rel="stylesheet" href="styles/main.css">
+        <!-- endbuild -->
+        <!-- build:js scripts/vendor/modernizr.js -->
+        <script src="bower_components/modernizr/modernizr.js"></script>
+        <!-- endbuild -->
+    </head>
+    <body>
+
+        <form class="controls">
+          <div class="buttons">
+            <button class="reload btn btn-1 btn-1a">RELOAD</button>
+          </div>
+
+          <div>
+            <label>Mutation Rate</label>
+            <input type="range" name="range-mutation" min="0.0" max="1.0" step="0.01" value="0.5" />
+            <output for="range-mutation"></output>
+          </div>
+          <div>
+            <label>Population Size</label>
+            <input type="range" name="range-population" min="1" max="300" step="1" value="20" />
+            <output for="range-population"></output>
+          </div>
+          <div>
+            <label>Evolution Speed</label>
+            <input type="range" name="range-evolution" min="0" max="1000" step="10" value="500" />
+            <output for="range-evolution"></output>
+          </div>
+          <!-- <div> -->
+          <!--   <label>Goal</label> -->
+          <!--   <input type="text" name="goal" value="Hello World!"/> -->
+          <!-- </div> -->
+        </form>
+
+        <div class="clear"></div>
+
+        <div id='stats'>
+          <div class='stat'>
+            <h2>generation</h2>
+            <span class='value' id='generation'>10</span>
+          </div>
+
+          <div class='stat'>
+            <h2>fittest gene</h2>
+            <span class='value' id='fittest'>Js3iroif iori2</span>
+          </div>
+
+          <div class='stat'>
+            <h2>fitness score</h2>
+            <span class='value' id='fitness'>0</span>
+          </div>
+        </div>
+
+        <div class="clear"></div>
+
+        <h2 style="text-align: center">Population</h2>
+        <table class="population">
+        </table>
+        <!--[if lt IE 7]>
+            <p class="chromeframe">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> or <a href="http://www.google.com/chromeframe/?redirect=true">activate Google Chrome Frame</a> to improve your experience.</p>
+        <![endif]-->
+
+        <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+
+        <!-- build:js scripts/main.js -->
+        <script src="bower_components/jquery/jquery.js"></script>
+        <script src="http://codeorigin.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="scripts/main.js"></script>
+        <!-- endbuild -->
+
+</body>
+</html>

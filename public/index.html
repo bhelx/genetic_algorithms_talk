@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6" lang="en"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7" lang="en"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js ie8" lang="en"> <![endif]-->
+<!--[if gt IE 8]><!-->  <html class="no-js" lang="en"> <!--<![endif]-->
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	
+	<title>Genetic Algorithms</title>
+	
+	<meta name="viewport" content="width=1024, user-scalable=no">
+	
+	<!-- Core and extension CSS files -->
+  <link rel="stylesheet" href="core/deck.core.css">
+	<link rel="stylesheet" href="extensions/goto/deck.goto.css">
+	<link rel="stylesheet" href="extensions/menu/deck.menu.css">
+	<link rel="stylesheet" href="extensions/navigation/deck.navigation.css">
+	<link rel="stylesheet" href="extensions/status/deck.status.css">
+	<link rel="stylesheet" href="extensions/hash/deck.hash.css">
+	<link rel="stylesheet" href="extensions/scale/deck.scale.css">
+
+  <link rel="stylesheet" href="extensions/codemirror/deck.codemirror.css">
+
+
+	<!-- Style theme. More available in /themes/style/ or create your own. -->
+	<link rel="stylesheet" href="themes/style/swiss.css">
+
+  <link rel="stylesheet" href="extensions/codemirror/themes/default.css">
+
+	<!-- Transition theme. More available in /themes/transition/ or create your own. -->
+	<link rel="stylesheet" href="themes/transition/horizontal-slide.css">
+	
+	<script src="modernizr.custom.js"></script>
+</head>
+
+<body class="deck-container">
+
+<!-- Begin slides -->
+<section class="slide" id="title-slide">
+  <h1>Genetic Algorithms</h1>
+  <h3>:bhelx => /github|twitter|freenode/</h3>
+</section>
+
+<section class="slide" id="definition">
+  <h2>Genetic Algorithms</h2>
+  <blockquote>
+    Computer programs that "evolve" in ways that resemble natural selection can solve complex problems even their creators do not fully understand
+  </blockquote>
+  <p>--</i>John Holland</i><p>
+</section>
+
+<section class="slide" id="what-is-it">
+  <h2>Genetic Algorithms</h2>
+  <ul>
+    <li>Not a singular algorithm, it's a class of algorithms</li>
+    <li>No understanding of biological sciences required</li>
+  </ul>
+</section>
+
+<section class="slide" id="properties">
+  <h2>Taxonomy</h2>
+  <p>There are 5 properties I've noticed that are required to classify an algorithm as a "Genetic Algorithm"</p>
+  <ul>
+    <li>Genotypes / Phenotypes</li>
+    <li>Crossover (through mating)</li>
+    <li>Selection</li>
+    <li>Fitness</li>
+    <li>Mutation</li>
+  </ul>
+</section>
+
+<!-- <section class="slide" id="derp"> -->
+<!--   <h2>Some Code</h2> -->
+<!--  -->
+<!--   <textarea id="code" name="code" class="code" mode="javascript" style="display: none;"> -->
+<!--   </textarea> -->
+<!-- </section> -->
+
+<!-- deck.navigation snippet -->
+<a href="#" class="deck-prev-link" title="Previous">&#8592;</a>
+<a href="#" class="deck-next-link" title="Next">&#8594;</a>
+
+<!-- deck.status snippet -->
+<p class="deck-status">
+	<span class="deck-status-current"></span>
+	/
+	<span class="deck-status-total"></span>
+</p>
+
+<!-- deck.goto snippet -->
+<form action="." method="get" class="goto-form">
+	<label for="goto-slide">Go to slide:</label>
+	<input type="text" name="slidenum" id="goto-slide" list="goto-datalist">
+	<datalist id="goto-datalist"></datalist>
+	<input type="submit" value="Go">
+</form>
+
+<!-- deck.hash snippet -->
+<a href="." title="Permalink to this slide" class="deck-permalink">#</a>
+
+<!-- Grab CDN jQuery, with a protocol relative URL; fall back to local if offline -->
+<script src="jquery-1.7.min.js"></script>
+
+<!-- Deck Core and extensions -->
+<script src="core/deck.core.js"></script>
+<script src="extensions/hash/deck.hash.js"></script>
+<script src="extensions/menu/deck.menu.js"></script>
+<script src="extensions/goto/deck.goto.js"></script>
+<script src="extensions/status/deck.status.js"></script>
+<script src="extensions/navigation/deck.navigation.js"></script>
+<script src="extensions/scale/deck.scale.js"></script>
+
+<!-- Initialize the deck -->
+<script>
+$(function() {
+	$.deck('.slide');
+});
+</script>
+
+<script src="extensions/codemirror/codemirror.js"></script>
+
+<script src="extensions/codemirror/mode/javascript/javascript.js"></script>
+
+<script src="extensions/codemirror/mode/xml/xml.js"></script>
+<script src="extensions/codemirror/mode/css/css.js"></script>
+<script src="extensions/codemirror/mode/htmlmixed/htmlmixed.js"></script>
+
+<script src="extensions/codemirror/deck.codemirror.js"></script>
+
+<script>
+
+CodeMirror.defineMode("ruby", function(config, parserConfig) {
+  var indentUnit = config.indentUnit;
+
+  function prefixRE(words) {
+    return new RegExp("^(?:" + words.join("|") + ")", "i");
+  }
+  function wordRE(words) {
+    return new RegExp("^(?:" + words.join("|") + ")$", "i");
+  }
+  var specials = wordRE(parserConfig.specials || []);
+ 
+  // long list of standard functions from lua manual
+  var builtins = wordRE([
+      'puts', 'Array', 'Float', 'Integer', 'String', 'at_exit', 'autoload', 'binding',
+      'caller', 'catch', 'chomp', 'eval', 'exec', 'exit', 'fail', 'fork', 'format',
+      'gets', 'gsub', 'iterator', 'lambda', 'load', 'loop', 'open', 'print', 'printf',
+      'proc', 'putc', 'puts', 'raise', 'rand', 'readline', 'readlines', 'require',
+      'select', 'sleep', 'split', 'sprintf', 'srand', 'sub', 'syscall', 'system', 'test',
+      'trace_var', 'trap', 'untrace_var'
+  ]);
+  var keywords = wordRE([
+ 			'alias', 'and', 'BEGIN', 'begin', 'break', 'case', 'class', 'def', 'defined', 'do', 'else',
+			'elsif', 'END', 'end', 'ensure', 'false', 'for', 'if', 
+			'in', 'module', 'next', 'not', 'or', 'redo', 'rescue', 'retry',
+			'return', 'self', 'super', 'then', 'true', 'undef', 'unless', 'until', 'when', 'while', 'yield'
+           ]);
+
+  var indentTokens = wordRE(["def", "case", "for", "while", "do", "module", "then", "unless", "\\(", "{"]);
+  var dedentTokens = wordRE(["end", "until", "\\)", "}"]);
+  var dedentPartial = prefixRE(["end", "until", "\\)", "}", "else", "elsif"]);
+
+  function readBracket(stream) {
+    var level = 0;
+    while (stream.eat("=")) ++level;
+    stream.eat("[");
+    return level;
+  }
+
+  function normal(stream, state) {
+    var ch = stream.next();
+    if (ch == "#") {
+      stream.skipToEnd();
+      return "comment";
+    } 
+    if (ch == "\"" || ch == "'")
+      return (state.cur = string(ch))(stream, state);
+   if (/\d/.test(ch)) {
+      stream.eatWhile(/[\w.%]/);
+      return "number";
+    }
+    if (/[\w_]/.test(ch)) {
+      stream.eatWhile(/[\w\\\-_.]/);
+      return "variable";
+    }
+    return null;
+  }
+
+  function string(quote) {
+    return function(stream, state) {
+      var escaped = false, ch;
+      while ((ch = stream.next()) != null) {
+        if (ch == quote && !escaped) break;
+        escaped = !escaped && ch == "\\";
+      }
+      if (!escaped) state.cur = normal;
+      return "string";
+    };
+  }
+    
+  return {
+    startState: function(basecol) {
+      return {basecol: basecol || 0, indentDepth: 0, cur: normal};
+    },
+
+    token: function(stream, state) {
+      if (stream.eatSpace()) return null;
+      var style = state.cur(stream, state);
+      var word = stream.current();
+      if (style == "variable") {
+        if (keywords.test(word)) style = "keyword";
+        else if (builtins.test(word)) style = "builtin";
+	else if (specials.test(word)) style = "variable-2";
+      }
+      if (indentTokens.test(word)) ++state.indentDepth;
+      else if (dedentTokens.test(word)) --state.indentDepth;
+      return style;
+    },
+
+    indent: function(state, textAfter) {
+      var closing = dedentPartial.test(textAfter);
+      return state.basecol + indentUnit * (state.indentDepth - (closing ? 1 : 0));
+    }
+  };
+});
+
+CodeMirror.defineMIME("text/x-ruby", "ruby");
+
+CodeMirror.defineMode("python", function(conf, parserConf) {
+    var ERRORCLASS = 'error';
+    
+    function wordRegexp(words) {
+        return new RegExp("^((" + words.join(")|(") + "))\\b");
+    }
+    
+    var singleOperators = new RegExp("^[\\+\\-\\*/%&|\\^~<>!]");
+    var singleDelimiters = new RegExp('^[\\(\\)\\[\\]\\{\\}@,:`=;\\.]');
+    var doubleOperators = new RegExp("^((==)|(!=)|(<=)|(>=)|(<>)|(<<)|(>>)|(//)|(\\*\\*))");
+    var doubleDelimiters = new RegExp("^((\\+=)|(\\-=)|(\\*=)|(%=)|(/=)|(&=)|(\\|=)|(\\^=))");
+    var tripleDelimiters = new RegExp("^((//=)|(>>=)|(<<=)|(\\*\\*=))");
+    var identifiers = new RegExp("^[_A-Za-z][_A-Za-z0-9]*");
+
+    var wordOperators = wordRegexp(['and', 'or', 'not', 'is', 'in']);
+    var commonkeywords = ['as', 'assert', 'break', 'class', 'continue',
+                          'def', 'del', 'elif', 'else', 'except', 'finally',
+                          'for', 'from', 'global', 'if', 'import',
+                          'lambda', 'pass', 'raise', 'return',
+                          'try', 'while', 'with', 'yield'];
+    var commontypes = ['bool', 'classmethod', 'complex', 'dict', 'enumerate',
+                       'float', 'frozenset', 'int', 'list', 'object',
+                       'property', 'reversed', 'set', 'slice', 'staticmethod',
+                       'str', 'super', 'tuple', 'type'];
+    var py2 = {'types': ['basestring', 'buffer', 'file', 'long', 'unicode',
+                         'xrange'],
+               'keywords': ['exec', 'print']};
+    var py3 = {'types': ['bytearray', 'bytes', 'filter', 'map', 'memoryview',
+                         'open', 'range', 'zip'],
+               'keywords': ['nonlocal']};
+
+    if (!!parserConf.version && parseInt(parserConf.version, 10) === 3) {
+        commonkeywords = commonkeywords.concat(py3.keywords);
+        commontypes = commontypes.concat(py3.types);
+        var stringPrefixes = new RegExp("^(([rb]|(br))?('{3}|\"{3}|['\"]))", "i");
+    } else {
+        commonkeywords = commonkeywords.concat(py2.keywords);
+        commontypes = commontypes.concat(py2.types);
+        var stringPrefixes = new RegExp("^(([rub]|(ur)|(br))?('{3}|\"{3}|['\"]))", "i");
+    }
+    var keywords = wordRegexp(commonkeywords);
+    var types = wordRegexp(commontypes);
+
+    var indentInfo = null;
+
+    // tokenizers
+    function tokenBase(stream, state) {
+        // Handle scope changes
+        if (stream.sol()) {
+            var scopeOffset = state.scopes[0].offset;
+            if (stream.eatSpace()) {
+                var lineOffset = stream.indentation();
+                if (lineOffset > scopeOffset) {
+                    indentInfo = 'indent';
+                } else if (lineOffset < scopeOffset) {
+                    indentInfo = 'dedent';
+                }
+                return null;
+            } else {
+                if (scopeOffset > 0) {
+                    dedent(stream, state);
+                }
+            }
+        }
+        if (stream.eatSpace()) {
+            return null;
+        }
+        
+        var ch = stream.peek();
+        
+        // Handle Comments
+        if (ch === '#') {
+            stream.skipToEnd();
+            return 'comment';
+        }
+        
+        // Handle Number Literals
+        if (stream.match(/^[0-9\.]/, false)) {
+            var floatLiteral = false;
+            // Floats
+            if (stream.match(/^\d*\.\d+(e[\+\-]?\d+)?/i)) { floatLiteral = true; }
+            if (stream.match(/^\d+\.\d*/)) { floatLiteral = true; }
+            if (stream.match(/^\.\d+/)) { floatLiteral = true; }
+            if (floatLiteral) {
+                // Float literals may be "imaginary"
+                stream.eat(/J/i);
+                return 'number';
+            }
+            // Integers
+            var intLiteral = false;
+            // Hex
+            if (stream.match(/^0x[0-9a-f]+/i)) { intLiteral = true; }
+            // Binary
+            if (stream.match(/^0b[01]+/i)) { intLiteral = true; }
+            // Octal
+            if (stream.match(/^0o[0-7]+/i)) { intLiteral = true; }
+            // Decimal
+            if (stream.match(/^[1-9]\d*(e[\+\-]?\d+)?/)) {
+                // Decimal literals may be "imaginary"
+                stream.eat(/J/i);
+                // TODO - Can you have imaginary longs?
+                intLiteral = true;
+            }
+            // Zero by itself with no other piece of number.
+            if (stream.match(/^0(?![\dx])/i)) { intLiteral = true; }
+            if (intLiteral) {
+                // Integer literals may be "long"
+                stream.eat(/L/i);
+                return 'number';
+            }
+        }
+        
+        // Handle Strings
+        if (stream.match(stringPrefixes)) {
+            state.tokenize = tokenStringFactory(stream.current());
+            return state.tokenize(stream, state);
+        }
+        
+        // Handle operators and Delimiters
+        if (stream.match(tripleDelimiters) || stream.match(doubleDelimiters)) {
+            return null;
+        }
+        if (stream.match(doubleOperators)
+            || stream.match(singleOperators)
+            || stream.match(wordOperators)) {
+            return 'operator';
+        }
+        if (stream.match(singleDelimiters)) {
+            return null;
+        }
+        
+        if (stream.match(types)) {
+            return 'builtin';
+        }
+        
+        if (stream.match(keywords)) {
+            return 'keyword';
+        }
+        
+        if (stream.match(identifiers)) {
+            return 'variable';
+        }
+        
+        // Handle non-detected items
+        stream.next();
+        return ERRORCLASS;
+    }
+    
+    function tokenStringFactory(delimiter) {
+        while ('rub'.indexOf(delimiter.charAt(0).toLowerCase()) >= 0) {
+            delimiter = delimiter.substr(1);
+        }
+        var delim_re = new RegExp(delimiter);
+        var singleline = delimiter.length == 1;
+        var OUTCLASS = 'string';
+        
+        return function tokenString(stream, state) {
+            while (!stream.eol()) {
+                stream.eatWhile(/[^'"\\]/);
+                if (stream.eat('\\')) {
+                    stream.next();
+                    if (singleline && stream.eol()) {
+                        return OUTCLASS;
+                    }
+                } else if (stream.match(delim_re)) {
+                    state.tokenize = tokenBase;
+                    return OUTCLASS;
+                } else {
+                    stream.eat(/['"]/);
+                }
+            }
+            if (singleline) {
+                if (parserConf.singleLineStringErrors) {
+                    return ERRORCLASS;
+                } else {
+                    state.tokenize = tokenBase;
+                }
+            }
+            return OUTCLASS;
+        };
+    }
+    
+    function indent(stream, state, type) {
+        type = type || 'py';
+        var indentUnit = 0;
+        if (type === 'py') {
+            for (var i = 0; i < state.scopes.length; ++i) {
+                if (state.scopes[i].type === 'py') {
+                    indentUnit = state.scopes[i].offset + conf.indentUnit;
+                    break;
+                }
+            }
+        } else {
+            indentUnit = stream.column() + stream.current().length;
+        }
+        state.scopes.unshift({
+            offset: indentUnit,
+            type: type
+        });
+    }
+    
+    function dedent(stream, state) {
+        if (state.scopes.length == 1) return;
+        if (state.scopes[0].type === 'py') {
+            var _indent = stream.indentation();
+            var _indent_index = -1;
+            for (var i = 0; i < state.scopes.length; ++i) {
+                if (_indent === state.scopes[i].offset) {
+                    _indent_index = i;
+                    break;
+                }
+            }
+            if (_indent_index === -1) {
+                return true;
+            }
+            while (state.scopes[0].offset !== _indent) {
+                state.scopes.shift();
+            }
+            return false
+        } else {
+            state.scopes.shift();
+            return false;
+        }
+    }
+
+    function tokenLexer(stream, state) {
+        indentInfo = null;
+        var style = state.tokenize(stream, state);
+        var current = stream.current();
+
+        // Handle '.' connected identifiers
+        if (current === '.') {
+            style = state.tokenize(stream, state);
+            current = stream.current();
+            if (style === 'variable') {
+                return 'variable';
+            } else {
+                return ERRORCLASS;
+            }
+        }
+        
+        // Handle decorators
+        if (current === '@') {
+            style = state.tokenize(stream, state);
+            current = stream.current();
+            if (style === 'variable'
+                || current === '@staticmethod'
+                || current === '@classmethod') {
+                return 'meta';
+            } else {
+                return ERRORCLASS;
+            }
+        }
+        
+        // Handle scope changes.
+        if (current === 'pass' || current === 'return') {
+            state.dedent += 1;
+        }
+        if ((current === ':' && !state.lambda && state.scopes[0].type == 'py')
+            || indentInfo === 'indent') {
+            indent(stream, state);
+        }
+        var delimiter_index = '[({'.indexOf(current);
+        if (delimiter_index !== -1) {
+            indent(stream, state, '])}'.slice(delimiter_index, delimiter_index+1));
+        }
+        if (indentInfo === 'dedent') {
+            if (dedent(stream, state)) {
+                return ERRORCLASS;
+            }
+        }
+        delimiter_index = '])}'.indexOf(current);
+        if (delimiter_index !== -1) {
+            if (dedent(stream, state)) {
+                return ERRORCLASS;
+            }
+        }
+        if (state.dedent > 0 && stream.eol() && state.scopes[0].type == 'py') {
+            if (state.scopes.length > 1) state.scopes.shift();
+            state.dedent -= 1;
+        }
+        
+        return style;
+    }
+
+    var external = {
+        startState: function(basecolumn) {
+            return {
+              tokenize: tokenBase,
+              scopes: [{offset:basecolumn || 0, type:'py'}],
+              lastToken: null,
+              lambda: false,
+              dedent: 0
+          };
+        },
+        
+        token: function(stream, state) {
+            var style = tokenLexer(stream, state);
+            
+            state.lastToken = {style:style, content: stream.current()};
+            
+            if (stream.eol() && stream.lambda) {
+                state.lambda = false;
+            }
+            
+            return style;
+        },
+        
+        indent: function(state, textAfter) {
+            if (state.tokenize != tokenBase) {
+                return 0;
+            }
+            
+            return state.scopes[0].offset;
+        }
+        
+    };
+    return external;
+});
+
+CodeMirror.defineMIME("text/x-python", "python");
+
+
+
+</script>
+
+</body>
+</html>

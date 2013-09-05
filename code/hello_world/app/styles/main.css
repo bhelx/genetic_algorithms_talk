@@ -1,0 +1,164 @@
+@import url(http://fonts.googleapis.com/css?family=Lato);
+
+body {
+    font-family: 'Lato', sans-serif;
+    color: #555;
+    background: #eee;
+    margin: 0 auto;
+}
+
+#stats {
+    overflow: hidden;
+    margin-top: 30px;
+}
+
+#stats .stat {
+    width: 27.0%;
+    padding: 0 3% 0;
+    float: left;
+    text-align: center;
+    border-right: solid;
+    border-color: #bbb;
+    padding-bottom: 25px;
+}
+
+#stats .stat:nth-child(3) {
+    border-right: none;
+}
+
+h2 {
+    text-transform: uppercase;
+    font-size: 2em;
+    letter-spacing: 3.14px;
+}
+
+#stats .stat .value {
+    font-size: 1.2em;
+    color: #888;
+}
+
+form {
+    width: 100%;
+    margin: 0 30px 30px;
+}
+
+form > div {
+    position: relative;
+    float: left;
+    width: 300px;
+}
+
+form .buttons {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    text-align: right;
+    padding-right: 30px;
+}
+
+label {
+    display: block;
+    margin: 0 0 10px;
+}
+
+input[type="range"] {
+    width: 250px;
+    height: 15px;
+    background: #fff;
+    overflow: hidden;
+    -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    position: relative;
+    z-index: 3;
+    width: 15px;
+    height: 15px;
+    background: #567;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb:after {
+    content: '';
+    width: 500px;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    right: 15px;
+    z-index: 1;
+    background: #abc;
+}
+
+output {
+    position: absolute;
+    top: 0;
+    right: 45px;
+}
+
+.clear {
+    clear: both;
+}
+
+table, td {
+    border: 1px solid black;
+}
+
+.population td {
+    width: 30px;
+    height: 30px;
+}
+
+.population {
+    margin: 30px 10px 10px 10px;
+    width: 95%;
+    color: #888;
+}
+
+/* General button style (reset) */
+.btn {
+    border: none;
+    font-family: inherit;
+    font-size: inherit;
+    color: #aaa;
+    background: none;
+    cursor: pointer;
+    padding: 25px 80px;
+    display: inline-block;
+    margin: 15px 30px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    font-weight: 700;
+    outline: none;
+    position: relative;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+.btn:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+/* Button 1 */
+.btn-1 {
+    border: 3px solid #fff;
+    color: #555;
+}
+
+/* Button 1a */
+.btn-1a:hover,
+.btn-1a:active {
+    color: #0e83cd;
+    background: #fff;
+}
+
+
